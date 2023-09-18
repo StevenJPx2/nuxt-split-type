@@ -1,8 +1,8 @@
 {
-  "name": "my-module",
-  "version": "1.0.0",
-  "description": "My new Nuxt module",
-  "repository": "your-org/my-module",
+  "name": "nuxt-split-type",
+  "version": "0.0.1",
+  "description": "Nuxt SplitType",
+  "repository": "stevenjpx2/nuxt-split-type",
   "license": "MIT",
   "type": "module",
   "exports": {
@@ -37,6 +37,8 @@
     "@nuxt/schema": "^3.7.2",
     "@nuxt/test-utils": "^3.7.3",
     "@types/node": "^18.17.15",
+    "@vueuse/core": "^10.4.1",
+    "@vueuse/nuxt": "^10.4.1",
     "changelogen": "^0.5.5",
     "eslint": "^8.49.0",
     "nuxt": "^3.7.3",
