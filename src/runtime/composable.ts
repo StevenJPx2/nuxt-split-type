@@ -2,17 +2,19 @@ import SplitType, { TypesValue } from "split-type";
 import { MaybeComputedElementRef, TypeOptions } from "./types";
 import { ref, useWindowSize, unrefElement, watch } from "#imports";
 
+// TODO: Return reset function
+
 type UseSplitTextOptions = {
   splitBy: TypeOptions;
   wrapping?: {
     wrapType: keyof HTMLElementTagNameMap;
-    wrapClass: string;
+    wrapClass?: string;
     select: TypesValue;
   };
   onComplete?: (instanceVal: SplitType) => void;
 };
 
-export default function useSplitText(
+export function useSplitText(
   target: MaybeComputedElementRef,
   options: UseSplitTextOptions,
 ) {
@@ -29,12 +31,13 @@ export default function useSplitText(
       instanceVal.words?.forEach((el) => (el.style.display = "inline-flex"));
 
     if (wrapping) {
-      instanceVal[wrapping.select]?.forEach((childEl, index) => {
-        const { wrapType, wrapClass } = wrapping;
+      const { select, wrapClass, wrapType } = wrapping;
+
+      instanceVal[select]?.forEach((childEl, index) => {
         const wrapEl = document.createElement(wrapType);
         childEl.classList.add("h-fit", "origin-top-left");
-        wrapEl.classList.add(...wrapClass.split(" "));
-        wrapEl.dataset[`${wrapping.select}-index`] = `${index}`;
+        if (!!wrapClass) wrapEl.classList.add(...wrapClass.split(" "));
+        wrapEl.dataset[`${select}Index`] = `${index}`;
         childEl.parentNode?.appendChild(wrapEl);
         wrapEl.appendChild(childEl);
       });

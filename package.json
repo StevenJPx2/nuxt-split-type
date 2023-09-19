@@ -28,7 +28,8 @@
     "test:watch": "vitest watch"
   },
   "dependencies": {
-    "@nuxt/kit": "^3.7.2"
+    "@nuxt/kit": "^3.7.2",
+    "typescript": "^5.2.2"
   },
   "devDependencies": {
     "@nuxt/devtools": "latest",
