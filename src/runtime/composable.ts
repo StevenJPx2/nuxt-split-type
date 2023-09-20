@@ -1,6 +1,14 @@
 import SplitType, { TypesValue } from "split-type";
 import { MaybeComputedElementRef, TypeOptions } from "./types";
-import { ref, useWindowSize, unrefElement, watch } from "#imports";
+import {
+  ref,
+  useWindowSize,
+  unrefElement,
+  watch,
+  tryOnMounted,
+  useEventListener,
+  tryOnScopeDispose,
+} from "#imports";
 
 // TODO: Return reset function
 
@@ -14,6 +22,13 @@ type UseSplitTextOptions = {
   onComplete?: (instanceVal: SplitType) => void;
 };
 
+function isInstanceNotNullish(
+  instance: SplitType | null | undefined,
+): asserts instance is SplitType {
+  if (!instance || typeof instance !== "object")
+    throw new Error("useSplitText only works on mount");
+}
+
 export function useSplitText(
   target: MaybeComputedElementRef,
   options: UseSplitTextOptions,
@@ -22,6 +37,7 @@ export function useSplitText(
   const { splitBy, wrapping, onComplete } = options;
 
   const fn = () => {
+    if (window || undefined) return;
     const unRefedTarget = unrefElement(target) as HTMLElement;
     instance.value = new SplitType(unRefedTarget, { types: splitBy });
     const instanceVal = instance.value;
@@ -46,11 +62,22 @@ export function useSplitText(
 
   fn();
 
-  const { width } = useWindowSize();
+  useEventListener(
+    "resize",
+    () => {
+      console.log("resized");
+      instance.value?.split({});
+    },
+    { passive: true },
+  );
 
-  watch(width, () => {
-    instance.value?.split({});
-  });
+  isInstanceNotNullish(instance.value);
 
-  return { instance };
+  tryOnScopeDispose(instance.value.revert);
+
+  return {
+    instance,
+    revert: instance.value.revert,
+    split: instance.value.split,
+  };
 }
