@@ -4,6 +4,7 @@ import {
   createResolver,
   installModule,
   addImports,
+  addComponent,
 } from "@nuxt/kit";
 
 import { name, version } from "../package.json";
@@ -19,7 +20,7 @@ export default defineNuxtModule<ModuleOptions>({
   },
   // Default configuration options of the Nuxt module
   defaults: {},
-  async setup(options, nuxt) {
+  async setup() {
     const resolver = createResolver(import.meta.url);
 
     // Do not add the extension since the `.ts` will be transpiled to `.mjs` after `npm run prepack`
@@ -28,6 +29,10 @@ export default defineNuxtModule<ModuleOptions>({
       name: "useSplitText",
       as: "useSplitText",
       from: resolver.resolve("./runtime/composable"),
+    });
+    addComponent({
+      name: "SplitText",
+      filePath: resolver.resolve("./runtime/component"),
     });
 
     await installModule("@vueuse/nuxt", {});

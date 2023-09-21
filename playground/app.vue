@@ -1,18 +1,31 @@
 <script setup lang="ts">
-import { ref, tryOnMounted, useSplitText } from "#imports";
+import SplitText from "../src/runtime/component.vue";
+import { ref, useSplitText, useTimeoutFn } from "#imports";
 import { promiseTimeout } from "@vueuse/core";
-const divRef = ref<HTMLDivElement | null>(null);
 
-tryOnMounted(async () => {
-  const { instance } = useSplitText(divRef, {
-    splitBy: "lines, words",
-    wrapping: { select: "lines", wrapType: "span", wrapClass: "inline-block" },
-  });
-  await promiseTimeout(1000);
-  instance.value?.revert();
+const divRef = ref<HTMLDivElement | null>(null);
+const compRef = ref<InstanceType<typeof SplitText> | null>(null);
+
+const { instance, onComplete } = useSplitText(divRef, {
+  splitBy: "lines, words",
+  wrapping: { select: "lines", wrapType: "span", wrapClass: "inline-block" },
 });
+
+onComplete((instance) => {
+  console.log("complete", instance);
+});
+
+useTimeoutFn(async () => {
+  await promiseTimeout(3000);
+  console.log("revert");
+  instance.value?.revert();
+}, 1000);
 </script>
 
 <template>
   <p ref="divRef">Nuxt module playground!</p>
+  <split-text ref="compRef">Hello! brudda</split-text>
+  <pre>
+    {{ compRef?.el?.innerText }}
+  </pre>
 </template>
