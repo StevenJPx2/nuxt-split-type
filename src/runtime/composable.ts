@@ -10,7 +10,7 @@ import {
   createEventHook,
 } from "#imports";
 
-type UseSplitTextOptions = {
+export type UseSplitTextOptions = {
   splitBy: TypeOptions;
   wrapping?: {
     wrapType: keyof HTMLElementTagNameMap;

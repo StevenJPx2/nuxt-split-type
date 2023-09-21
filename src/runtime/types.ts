@@ -1,4 +1,5 @@
 import { ComponentPublicInstance, MaybeRef, MaybeRefOrGetter } from "#imports";
+import { Mutable } from "@vueuse/core";
 
 type StringedCombination<
   T extends string[],
@@ -9,11 +10,17 @@ type StringedCombination<
   ? Item | `${Item}${Sep}${StringedCombination<[], Sep, Exclude<All, Item>>}`
   : never;
 
-type TypesValue = ["lines", "words", "chars"];
+export const TypesValue = ["lines", "words", "chars"] as const;
+export type TypesValue = Mutable<typeof TypesValue>;
+export type TypesValueUnion = TypesValue[number];
 
-type TypesListString = StringedCombination<TypesValue, ", ">;
+export type TypesListString = StringedCombination<TypesValue, ", ">;
+export type TypesValueTuple =
+  | [TypesValueUnion, TypesValueUnion, TypesValueUnion]
+  | [TypesValueUnion, TypesValueUnion]
+  | [TypesValueUnion];
+export type TypeOptions = TypesListString | TypesValueTuple;
 
-export type TypeOptions = TypesListString;
 export type VueInstance = ComponentPublicInstance;
 export type MaybeElementRef<T extends MaybeElement = MaybeElement> =
   MaybeRef<T>;

@@ -24,8 +24,22 @@ useTimeoutFn(async () => {
 
 <template>
   <p ref="divRef">Nuxt module playground!</p>
-  <split-text ref="compRef">Hello! brudda</split-text>
+  <split-text
+    lines
+    words
+    :wrapping="{ wrapType: 'span', wrapClass: 'inline-block', select: 'lines' }"
+    ref="compRef"
+  >
+    Hello! brudda
+  </split-text>
+
   <pre>
     {{ compRef?.el?.innerText }}
   </pre>
 </template>
+
+<style>
+.inline-block {
+  display: inline-block;
+}
+</style>
