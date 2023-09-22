@@ -9,22 +9,22 @@ const props = withDefaults(
      * What you want it to render as
      * @default "p"
      */
-    as: keyof HTMLElementTagNameMap;
+    as?: keyof HTMLElementTagNameMap;
     /**
      * Whether to split by lines or not
      * @default false
      */
-    lines: boolean;
+    lines?: boolean;
     /**
      * Whether to split by words or not
      * @default false
      */
-    words: boolean;
+    words?: boolean;
     /**
      * Whether to split by chars or not
      * @default false
      */
-    chars: boolean;
+    chars?: boolean;
     /**
      * The wrapping options
      * @default undefined
