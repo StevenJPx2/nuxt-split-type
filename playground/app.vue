@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import SplitText from "../src/runtime/component.vue";
+import { vSplitText } from "../src/runtime/plugin.client";
 import { ref, useSplitText, useTimeoutFn } from "#imports";
 import { promiseTimeout } from "@vueuse/core";
 
@@ -32,6 +33,10 @@ useTimeoutFn(async () => {
   >
     Hello! brudda
   </split-text>
+
+  <p v-split-text="{ splitBy: 'lines, words' }">
+    Yo yo yooooooo nuxt module playground
+  </p>
 
   <pre>
     {{ compRef?.el?.innerText }}
