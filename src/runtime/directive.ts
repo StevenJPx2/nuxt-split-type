@@ -10,7 +10,6 @@ type VSplitTextOptions = UseSplitTextOptions & {
 export const vSplitText: ObjectDirective<HTMLElement, VSplitTextOptions> = {
   [directiveHooks.mounted]: (el, binding) => {
     const { value } = binding;
-    const { onComplete } = useSplitText(el, value);
-    if (!!value.onComplete) onComplete(value.onComplete);
+    useSplitText(el, value);
   },
 };

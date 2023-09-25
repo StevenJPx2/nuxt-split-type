@@ -5,10 +5,11 @@ import {
   unrefElement,
   useEventListener,
   tryOnScopeDispose,
-  useMounted,
   tryOnMounted,
-  createEventHook,
+  computed,
+  watch,
 } from "#imports";
+import { defaultWindow } from "@vueuse/core";
 
 export type UseSplitTextOptions = {
   splitBy: TypeOptions;
@@ -17,22 +18,21 @@ export type UseSplitTextOptions = {
     wrapClass?: string;
     select: TypesValue;
   };
+  onComplete?: (instanceVal: SplitType) => void;
 };
 
 export function useSplitText(
   target: MaybeComputedElementRef,
   options: UseSplitTextOptions,
 ) {
+  const unRefedTarget = computed(() => unrefElement(target) as HTMLElement);
   const instance = ref<SplitType>();
-  const isMounted = useMounted();
-  const { splitBy, wrapping } = options;
-  const onComplete = createEventHook<SplitType>();
+  const { splitBy, wrapping, onComplete } = options;
 
   const fn = () => {
-    if (!isMounted.value) return;
+    if (!defaultWindow) return;
 
-    const unRefedTarget = unrefElement(target) as HTMLElement;
-    instance.value = new SplitType(unRefedTarget, { types: splitBy });
+    instance.value = new SplitType(unRefedTarget.value, { types: splitBy });
     const instanceVal = instance.value;
     if (
       (["chars", "words"] as TypesValue[]).every((sp) => splitBy.includes(sp))
@@ -52,16 +52,15 @@ export function useSplitText(
       });
     }
 
-    onComplete.trigger(instanceVal);
+    onComplete?.(instanceVal);
   };
 
-  fn();
+  watch(unRefedTarget, fn, { immediate: true, flush: "post" });
   tryOnMounted(fn);
 
   useEventListener(
     "resize",
     () => {
-      console.log("resized");
       instance.value?.split({});
     },
     { passive: true },
@@ -71,6 +70,7 @@ export function useSplitText(
 
   return {
     instance,
-    onComplete: onComplete.on,
   };
 }
+
+export type UseSplitTextReturn = ReturnType<typeof useSplitText>;

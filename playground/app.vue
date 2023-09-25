@@ -7,13 +7,12 @@ import { promiseTimeout } from "@vueuse/core";
 const divRef = ref<HTMLDivElement | null>(null);
 const compRef = ref<InstanceType<typeof SplitText> | null>(null);
 
-const { instance, onComplete } = useSplitText(divRef, {
+const { instance } = useSplitText(divRef, {
   splitBy: "lines, words",
   wrapping: { select: "lines", wrapType: "span", wrapClass: "inline-block" },
-});
-
-onComplete((instance) => {
-  console.log("complete", instance);
+  onComplete: (instance) => {
+    console.log("complete", instance);
+  },
 });
 
 useTimeoutFn(async () => {
