@@ -28,6 +28,7 @@ useTimeoutFn(async () => {
     lines
     words
     :wrapping="{ wrapType: 'span', wrapClass: 'inline-block', select: 'lines' }"
+    @complete="(ins) => console.log('done', ins)"
     ref="compRef"
   >
     Hello! brudda

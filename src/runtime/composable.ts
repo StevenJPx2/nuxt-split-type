@@ -7,9 +7,8 @@ import {
   tryOnScopeDispose,
   tryOnMounted,
   computed,
-  watch,
 } from "#imports";
-import { defaultWindow } from "@vueuse/core";
+import { defaultWindow, watchOnce } from "@vueuse/core";
 
 export type UseSplitTextOptions = {
   splitBy: TypeOptions;
@@ -25,12 +24,13 @@ export function useSplitText(
   target: MaybeComputedElementRef,
   options: UseSplitTextOptions,
 ) {
+  const hasRun = ref(false);
   const unRefedTarget = computed(() => unrefElement(target) as HTMLElement);
   const instance = ref<SplitType>();
   const { splitBy, wrapping, onComplete } = options;
 
   const fn = () => {
-    if (!defaultWindow) return;
+    if (!defaultWindow || hasRun.value) return;
 
     instance.value = new SplitType(unRefedTarget.value, { types: splitBy });
     const instanceVal = instance.value;
@@ -53,9 +53,10 @@ export function useSplitText(
     }
 
     onComplete?.(instanceVal);
+    hasRun.value = true;
   };
 
-  watch(unRefedTarget, fn, { immediate: true, flush: "post" });
+  watchOnce(unRefedTarget, fn, { immediate: false, flush: "pre" });
   tryOnMounted(fn);
 
   useEventListener(

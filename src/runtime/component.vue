@@ -2,6 +2,7 @@
 import { ref, useSplitText } from "#imports";
 import { TypesValue, TypesValueTuple } from "./types";
 import { UseSplitTextOptions } from "./composable";
+import SplitType from "split-type";
 
 const props = withDefaults(
   defineProps<{
@@ -27,8 +28,18 @@ const props = withDefaults(
     chars?: boolean;
     /**
      * The wrapping options
+     * @param `select` - apply wrapping to the specified split type - {TypesValue}
+     * @param `wrapType` - The type of element to wrap with - {HTMLTag}
+     * @param `wrapClass` - The class to apply to the wrapping element
      * @default undefined
-     * @example { select: "lines", wrapType: "span", wrapClass: "inline-block" }
+     * @example
+     * ```
+     * {
+     *   select: "lines",
+     *   wrapType: "span",
+     *   wrapClass: "inline-block"
+     * }
+     * ```
      */
     wrapping?: UseSplitTextOptions["wrapping"];
   }>(),
@@ -40,17 +51,29 @@ const props = withDefaults(
   },
 );
 
+const emit = defineEmits<{
+  /**
+   * The callback function
+   * @example () => console.log("done")
+   * @default undefined
+   */
+  complete: [instance: SplitType];
+}>();
+
 const compRef = ref<HTMLElement | null>(null);
 const splitBy = TypesValue.filter((i) => props[i]) as TypesValueTuple;
 
-useSplitText(compRef, {
+const { instance } = useSplitText(compRef, {
   splitBy,
   wrapping: props.wrapping,
+  onComplete: (instance) => emit("complete", instance),
 });
 
 defineExpose({ el: compRef });
 </script>
 
 <template>
-  <component ref="compRef" :is="props.as"><slot /></component>
+  <component ref="compRef" :is="props.as">
+    <slot :instance="instance" />
+  </component>
 </template>
