@@ -1,6 +1,30 @@
 # Changelog
 
 
+## v0.1.0
+
+[compare changes](https://github.com/stevenjpx2/nuxt-split-type/compare/v0.0.2...v0.1.0)
+
+### 🚀 Enhancements
+
+- ⚠️  Add SplitType native returns to composable output, component props are now reactive ([5448f04](https://github.com/stevenjpx2/nuxt-split-type/commit/5448f04))
+
+### 📖 Documentation
+
+- Update README with new outputs ([aa90383](https://github.com/stevenjpx2/nuxt-split-type/commit/aa90383))
+
+### 🏡 Chore
+
+- Add package.json niceties and add warning to README ([6801bda](https://github.com/stevenjpx2/nuxt-split-type/commit/6801bda))
+
+#### ⚠️ Breaking Changes
+
+- ⚠️  Add SplitType native returns to composable output, component props are now reactive ([5448f04](https://github.com/stevenjpx2/nuxt-split-type/commit/5448f04))
+
+### ❤️ Contributors
+
+- Steven John <stevenjpx2@gmail.com>
+
 ## v0.0.2
 
 [compare changes](https://github.com/stevenjpx2/nuxt-split-type/compare/v0.0.1...v0.0.2)
