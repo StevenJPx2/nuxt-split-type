@@ -1,6 +1,18 @@
 # Changelog
 
 
+## v0.0.2
+
+[compare changes](https://github.com/stevenjpx2/nuxt-split-type/compare/v0.0.1...v0.0.2)
+
+### 📖 Documentation
+
+- Add full docs and push strategy, eslintify ([5f5e28e](https://github.com/stevenjpx2/nuxt-split-type/commit/5f5e28e))
+
+### ❤️ Contributors
+
+- Steven John <stevenjpx2@gmail.com>
+
 ## v0.0.1
 
 
