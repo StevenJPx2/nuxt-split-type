@@ -23,13 +23,15 @@ useTimeoutFn(async () => {
 </script>
 
 <template>
-  <p ref="divRef">Nuxt module playground!</p>
+  <p ref="divRef">
+    Nuxt module playground!
+  </p>
   <split-text
+    ref="compRef"
     lines
     words
     :wrapping="{ wrapType: 'span', wrapClass: 'inline-block', select: 'lines' }"
     @complete="(ins) => console.log('done', ins)"
-    ref="compRef"
   >
     Hello! brudda
   </split-text>

@@ -11,7 +11,26 @@ import {
 import { defaultWindow, watchOnce } from "@vueuse/core";
 
 export type UseSplitTextOptions = {
+  /** The types of splits to apply to the target element
+   * @example `["lines", "words", "chars"]`
+   *
+   * */
   splitBy: TypeOptions;
+  /**
+   * The wrapping options
+   * @param `select` - apply wrapping to the specified split type - {TypesValue}
+   * @param `wrapType` - The type of element to wrap with - {HTMLTag}
+   * @param `wrapClass` - The class to apply to the wrapping element
+   * @default undefined
+   * @example
+   * ```
+   * {
+   *   select: "lines",
+   *   wrapType: "span",
+   *   wrapClass: "inline-block"
+   * }
+   * ```
+   */
   wrapping?: {
     wrapType: keyof HTMLElementTagNameMap;
     wrapClass?: string;
@@ -45,7 +64,7 @@ export function useSplitText(
       instanceVal[select]?.forEach((childEl, index) => {
         const wrapEl = document.createElement(wrapType);
         childEl.classList.add("h-fit", "origin-top-left");
-        if (!!wrapClass) wrapEl.classList.add(...wrapClass.split(" "));
+        if (wrapClass) wrapEl.classList.add(...wrapClass.split(" "));
         wrapEl.dataset[`${select}Index`] = `${index}`;
         childEl.parentNode?.appendChild(wrapEl);
         wrapEl.appendChild(childEl);

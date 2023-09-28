@@ -14,18 +14,19 @@ Find and replace all on all files (CMD+SHIFT+F):
 [![License][license-src]][license-href]
 [![Nuxt][nuxt-src]][nuxt-href]
 
-Nuxt integration for SplitType.
+[Nuxt][nuxt-href] integration for [SplitType](https://github.com/lukepeavey/SplitType).
 
 - [✨ &nbsp;Release Notes](/CHANGELOG.md)
 <!-- - [🏀 Online playground](https://stackblitz.com/github/your-org/nuxt-split-type?file=playground%2Fapp.vue) -->
-<!-- - [📖 &nbsp;Documentation](https://example.com) -->
+- [📖 &nbsp;Documentation](#usage)
 
 ## Features
 
 <!-- Highlight some of the features your module provide here -->
-- ⛰ &nbsp;Foo
-- 🚠 &nbsp;Bar
-- 🌲 &nbsp;Baz
+- ⛰  Activate SplitType however you want: directive, component or composable
+- 💪 Full Typescript support, including improvements on the original SplitType library.
+- ✨ Special `wrapping` selector to wrap either lines, words or chars with a special HTML element with defined classes
+- 🚠 Callback for SpiltType Proxy
 
 ## Quick Setup
 
@@ -53,6 +54,56 @@ export default defineNuxtConfig({
 ```
 
 That's it! You can now use Nuxt SplitType in your Nuxt app ✨
+
+## Usage
+
+### Composable
+```vue
+<script setup lang="ts">
+const pRef = ref<HTMLParagraphElement | null>(null);
+const { instance } = useSplitText(divRef, {
+  splitBy: "lines, words",
+  onComplete: (instance) => {
+    console.log("complete", instance);
+  },
+});
+
+useTimeoutFn(async () => {
+  console.log("revert");
+  instance.value?.revert();
+}, 4000);
+
+</script>
+
+<template>
+  <p ref="divRef">Nuxt SplitType is the best!</p>
+</template>
+```
+
+### Component
+```vue
+<template>
+  <split-text
+    lines
+    words
+    :wrapping="{ wrapType: 'span', wrapClass: 'inline-block', select: 'lines' }"
+    @complete="(ins) => console.log('done', ins)"
+    v-slot="{ instance }"
+  >
+    Nuxt SplitType is the best!
+  </split-text>
+</template>
+```
+
+### Directive
+```vue
+<template>
+  <p v-split-text="{ splitBy: 'lines, words' }">
+    Nuxt SplitType is the best!
+  </p>
+</template>
+
+```
 
 ## Development
 

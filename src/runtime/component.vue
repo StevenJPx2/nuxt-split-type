@@ -48,6 +48,7 @@ const props = withDefaults(
     lines: false,
     words: false,
     chars: false,
+    wrapping: undefined,
   },
 );
 
@@ -73,7 +74,10 @@ defineExpose({ el: compRef });
 </script>
 
 <template>
-  <component ref="compRef" :is="props.as">
+  <component
+    :is="props.as"
+    ref="compRef"
+  >
     <slot :instance="instance" />
   </component>
 </template>
