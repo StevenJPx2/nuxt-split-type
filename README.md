@@ -64,7 +64,7 @@ That's it! You can now use Nuxt SplitType in your Nuxt app ✨
 ```vue
 <script setup lang="ts">
 const pRef = ref<HTMLParagraphElement | null>(null);
-const { instance } = useSplitText(divRef, {
+const { revert } = useSplitText(pRef, {
   splitBy: "lines, words",
   onComplete: (instance) => {
     console.log("complete", instance);
@@ -73,13 +73,13 @@ const { instance } = useSplitText(divRef, {
 
 useTimeoutFn(async () => {
   console.log("revert");
-  instance.value?.revert();
+  revert();
 }, 4000);
 
 </script>
 
 <template>
-  <p ref="divRef">Nuxt SplitType is the best!</p>
+  <p ref="pRef">Nuxt SplitType is the best!</p>
 </template>
 ```
 
