@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, useSplitText } from "#imports";
+import { computed, ref, toRefs, useSplitText, watch } from "#imports";
 import { TypesValue, TypesValueTuple } from "./types";
 import { UseSplitTextOptions } from "./composable";
 import SplitType from "split-type";
@@ -61,23 +61,26 @@ const emit = defineEmits<{
   complete: [instance: SplitType];
 }>();
 
-const compRef = ref<HTMLElement | null>(null);
-const splitBy = TypesValue.filter((i) => props[i]) as TypesValueTuple;
+const reactiveProps = toRefs(props);
 
-const { instance } = useSplitText(compRef, {
-  splitBy,
+const compRef = ref<HTMLElement | null>(null);
+const splitBy = computed(
+  () => TypesValue.filter((i) => reactiveProps[i].value) as TypesValueTuple,
+);
+
+const { instance, split } = useSplitText(compRef, {
+  splitBy: splitBy.value,
   wrapping: props.wrapping,
   onComplete: (instance) => emit("complete", instance),
 });
+
+watch(splitBy, (arr) => split({ types: arr }));
 
 defineExpose({ el: compRef });
 </script>
 
 <template>
-  <component
-    :is="props.as"
-    ref="compRef"
-  >
+  <component :is="props.as" ref="compRef">
     <slot :instance="instance" />
   </component>
 </template>

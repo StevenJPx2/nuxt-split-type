@@ -1,14 +1,12 @@
-import SplitType, { TypesValue } from "split-type";
+import SplitType, { TypesValue, SplitTypeOptions } from "split-type";
 import { MaybeComputedElementRef, TypeOptions } from "./types";
 import {
-  ref,
   unrefElement,
   useEventListener,
   tryOnScopeDispose,
-  tryOnMounted,
   computed,
+  watch,
 } from "#imports";
-import { defaultWindow, watchOnce } from "@vueuse/core";
 
 export type UseSplitTextOptions = {
   /** The types of splits to apply to the target element
@@ -19,6 +17,7 @@ export type UseSplitTextOptions = {
   /**
    * The wrapping options
    * @param `select` - apply wrapping to the specified split type - {TypesValue}
+   * @param `selectElClass` - The class to apply to the selected elements
    * @param `wrapType` - The type of element to wrap with - {HTMLTag}
    * @param `wrapClass` - The class to apply to the wrapping element
    * @default undefined
@@ -28,6 +27,7 @@ export type UseSplitTextOptions = {
    *   select: "lines",
    *   wrapType: "span",
    *   wrapClass: "inline-block"
+   *   selectElClass: "h-fit origin-top-left"
    * }
    * ```
    */
@@ -35,48 +35,77 @@ export type UseSplitTextOptions = {
     wrapType: keyof HTMLElementTagNameMap;
     wrapClass?: string;
     select: TypesValue;
+    selectElClass?: string;
   };
+  /**
+   * The callback to run after the split has completed
+   * @param `instanceVal` - The instance of SplitType
+   * @default undefined
+   * @example
+   * ```
+   *  (instanceVal) => {
+   *    instanceVal.words?.forEach((el) => (el.style.display = "inline-flex"));
+   *  }
+   *  ```
+   *  */
   onComplete?: (instanceVal: SplitType) => void;
+  /**
+   * The options to pass to the SplitType instance
+   * @default undefined
+   * @example
+   * ```
+   * {
+   *  splitClass: "splitted"
+   * }
+   * ```
+   * */
+  splitOptions?: Partial<Omit<SplitTypeOptions, "types" | "split">>;
 };
 
 export function useSplitText(
   target: MaybeComputedElementRef,
   options: UseSplitTextOptions,
 ) {
-  const hasRun = ref(false);
   const unRefedTarget = computed(() => unrefElement(target) as HTMLElement);
-  const instance = ref<SplitType>();
+  const instance = computed<SplitType | undefined>(() =>
+    !unRefedTarget.value
+      ? undefined
+      : new SplitType(unRefedTarget.value, {
+          types: options.splitBy,
+          ...options.splitOptions,
+        }),
+  );
   const { splitBy, wrapping, onComplete } = options;
 
-  const fn = () => {
-    if (!defaultWindow || hasRun.value) return;
-
-    instance.value = new SplitType(unRefedTarget.value, { types: splitBy });
-    const instanceVal = instance.value;
-    if (
-      (["chars", "words"] as TypesValue[]).every((sp) => splitBy.includes(sp))
-    )
-      instanceVal.words?.forEach((el) => (el.style.display = "inline-flex"));
-
-    if (wrapping) {
-      const { select, wrapClass, wrapType } = wrapping;
-
-      instanceVal[select]?.forEach((childEl, index) => {
-        const wrapEl = document.createElement(wrapType);
-        childEl.classList.add("h-fit", "origin-top-left");
-        if (wrapClass) wrapEl.classList.add(...wrapClass.split(" "));
-        wrapEl.dataset[`${select}Index`] = `${index}`;
-        childEl.parentNode?.appendChild(wrapEl);
-        wrapEl.appendChild(childEl);
-      });
-    }
-
-    onComplete?.(instanceVal);
-    hasRun.value = true;
+  const wrapFn = (instance: SplitType) => {
+    if (!wrapping) return;
+    instance[wrapping.select]?.forEach((childEl, index) => {
+      const wrapEl = document.createElement(wrapping.wrapType);
+      if (wrapping.selectElClass)
+        childEl.classList.add(...wrapping.selectElClass.split(" "));
+      if (wrapping.wrapClass)
+        wrapEl.classList.add(...wrapping.wrapClass.split(" "));
+      wrapEl.dataset[`${wrapping.select}Index`] = `${index}`;
+      childEl.parentNode?.appendChild(wrapEl);
+      wrapEl.appendChild(childEl);
+    });
   };
 
-  watchOnce(unRefedTarget, fn, { immediate: false, flush: "pre" });
-  tryOnMounted(fn);
+  watch(
+    instance,
+    (instance) => {
+      if (!instance) return;
+
+      if (
+        (["chars", "words"] as TypesValue[]).every((sp) => splitBy.includes(sp))
+      )
+        instance.words?.forEach((el) => (el.style.display = "inline-flex"));
+
+      wrapFn(instance);
+      onComplete?.(instance);
+    },
+    { flush: "post" },
+  );
 
   useEventListener(
     "resize",
@@ -90,6 +119,14 @@ export function useSplitText(
 
   return {
     instance,
+    lines: computed(() => instance.value?.lines),
+    words: computed(() => instance.value?.words),
+    chars: computed(() => instance.value?.chars),
+    split: (options: Partial<SplitTypeOptions>) => {
+      instance.value?.split(options);
+      if (!!instance.value && !!wrapping) wrapFn(instance.value);
+    },
+    revert: () => instance.value?.revert(),
   };
 }
 

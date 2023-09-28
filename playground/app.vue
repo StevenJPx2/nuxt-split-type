@@ -1,13 +1,12 @@
 <script setup lang="ts">
-import SplitText from "../src/runtime/component.vue";
-import { vSplitText } from "../src/runtime/plugin.client";
 import { ref, useSplitText, useTimeoutFn } from "#imports";
+import { SplitText } from "#components";
 import { promiseTimeout } from "@vueuse/core";
 
-const divRef = ref<HTMLDivElement | null>(null);
-const compRef = ref<InstanceType<typeof SplitText> | null>(null);
+const useWords = ref(true);
+const pRef = ref<HTMLParagraphElement | null>(null);
 
-const { instance } = useSplitText(divRef, {
+const { instance, lines, revert } = useSplitText(pRef, {
   splitBy: "lines, words",
   wrapping: { select: "lines", wrapType: "span", wrapClass: "inline-block" },
   onComplete: (instance) => {
@@ -16,27 +15,32 @@ const { instance } = useSplitText(divRef, {
 });
 
 useTimeoutFn(async () => {
+  useWords.value = false;
   await promiseTimeout(3000);
-  console.log("revert");
-  instance.value?.revert();
-}, 1000);
+  console.log("revert", lines.value, instance.value?.lines);
+  revert();
+}, 3000);
+
+const log = console.log;
 </script>
 
 <template>
-  <p ref="divRef">
-    Nuxt module playground!
-  </p>
+  <p ref="pRef">Nuxt module playground!</p>
   <split-text
-    ref="compRef"
     lines
-    words
+    :words="useWords"
     :wrapping="{ wrapType: 'span', wrapClass: 'inline-block', select: 'lines' }"
-    @complete="(ins) => console.log('done', ins)"
+    @complete="(ins) => log('done', ins)"
   >
     Hello! brudda
   </split-text>
 
-  <p v-split-text="{ splitBy: 'lines, words' }">
+  <p
+    v-split-text="{
+      splitBy: 'lines, words',
+      onComplete: (ins) => log('done directive', ins),
+    }"
+  >
     Yo yo yooooooo nuxt module playground
   </p>
 
