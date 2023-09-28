@@ -9,6 +9,9 @@ Find and replace all on all files (CMD+SHIFT+F):
 
 # Nuxt SplitType
 
+> [!WARNING]
+> This module is currently in pre-release and not production ready. However, I'm open to suggestions!
+
 [![npm version][npm-version-src]][npm-version-href]
 [![npm downloads][npm-downloads-src]][npm-downloads-href]
 [![License][license-src]][license-href]
