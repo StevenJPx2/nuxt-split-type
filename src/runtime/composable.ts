@@ -66,41 +66,47 @@ export function useSplitText(
   target: MaybeComputedElementRef,
   options: UseSplitTextOptions,
 ) {
-  const unRefedTarget = computed(() => unrefElement(target) as HTMLElement);
-  const instance = computed<SplitType | undefined>(() =>
-    !unRefedTarget.value
-      ? undefined
-      : new SplitType(unRefedTarget.value, {
-          types: options.splitBy,
-          ...options.splitOptions,
-        }),
-  );
-  const { splitBy, wrapping, onComplete } = options;
-
-  const wrapFn = (instance: SplitType) => {
-    if (!wrapping) return;
-    instance[wrapping.select]?.forEach((childEl, index) => {
-      const wrapEl = document.createElement(wrapping.wrapType);
-      if (wrapping.selectElClass)
-        childEl.classList.add(...wrapping.selectElClass.split(" "));
-      if (wrapping.wrapClass)
-        wrapEl.classList.add(...wrapping.wrapClass.split(" "));
-      wrapEl.dataset[`${wrapping.select}Index`] = `${index}`;
-      childEl.parentNode?.appendChild(wrapEl);
-      wrapEl.appendChild(childEl);
-    });
-  };
-
-  watch(
-    instance,
-    (instance) => {
-      if (!instance) return;
-
+  const unRefedTarget = computed(() => unrefElement(target) as HTMLElement),
+    instance = computed<SplitType | undefined>(() =>
+      !unRefedTarget.value
+        ? undefined
+        : new SplitType(unRefedTarget.value, {
+            types: options.splitBy,
+            ...options.splitOptions,
+          }),
+    ),
+    lines = computed(() => instance.value?.lines),
+    words = computed(() => instance.value?.words),
+    chars = computed(() => instance.value?.chars),
+    split = (options: Partial<SplitTypeOptions>) => {
+      instance.value?.split(options);
+      if (!!instance.value && !!wrapping) wrapFn(instance.value);
+    },
+    revert = () => instance.value?.revert(),
+    { splitBy, wrapping, onComplete } = options,
+    wrapFn = (instance: SplitType) => {
       if (
         (["chars", "words"] as TypesValue[]).every((sp) => splitBy.includes(sp))
       )
         instance.words?.forEach((el) => (el.style.display = "inline-flex"));
 
+      if (!wrapping) return;
+      instance[wrapping.select]?.forEach((childEl, index) => {
+        const wrapEl = document.createElement(wrapping.wrapType);
+        if (wrapping.selectElClass)
+          childEl.classList.add(...wrapping.selectElClass.split(" "));
+        if (wrapping.wrapClass)
+          wrapEl.classList.add(...wrapping.wrapClass.split(" "));
+        wrapEl.dataset[`${wrapping.select}Index`] = `${index}`;
+        childEl.parentNode?.appendChild(wrapEl);
+        wrapEl.appendChild(childEl);
+      });
+    };
+
+  watch(
+    instance,
+    (instance) => {
+      if (!instance) return;
       wrapFn(instance);
       onComplete?.(instance);
     },
@@ -110,23 +116,20 @@ export function useSplitText(
   useEventListener(
     "resize",
     () => {
-      instance.value?.split({});
+      split({});
     },
     { passive: true },
   );
 
-  tryOnScopeDispose(instance.value?.revert ?? (() => {}));
+  tryOnScopeDispose(revert);
 
   return {
     instance,
-    lines: computed(() => instance.value?.lines),
-    words: computed(() => instance.value?.words),
-    chars: computed(() => instance.value?.chars),
-    split: (options: Partial<SplitTypeOptions>) => {
-      instance.value?.split(options);
-      if (!!instance.value && !!wrapping) wrapFn(instance.value);
-    },
-    revert: () => instance.value?.revert(),
+    lines,
+    words,
+    chars,
+    split,
+    revert,
   };
 }
 
