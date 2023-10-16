@@ -1,6 +1,22 @@
 # Changelog
 
 
+## v0.1.1
+
+[compare changes](https://github.com/stevenjpx2/nuxt-split-type/compare/v0.1.0...v0.1.1)
+
+### 🩹 Fixes
+
+- Move split-type to dependency ([aa8ef2b](https://github.com/stevenjpx2/nuxt-split-type/commit/aa8ef2b))
+
+### 💅 Refactors
+
+- Variable assignment ([172afa3](https://github.com/stevenjpx2/nuxt-split-type/commit/172afa3))
+
+### ❤️ Contributors
+
+- Steven John <stevenjpx2@gmail.com>
+
 ## v0.1.0
 
 [compare changes](https://github.com/stevenjpx2/nuxt-split-type/compare/v0.0.2...v0.1.0)
