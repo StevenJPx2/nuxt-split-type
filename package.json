@@ -44,7 +44,8 @@
   },
   "dependencies": {
     "@nuxt/kit": "^3.7.2",
-    "typescript": "^5.2.2"
+    "typescript": "^5.2.2",
+    "split-type": "^0.3.3"
   },
   "devDependencies": {
     "@nuxt/devtools": "latest",
@@ -58,7 +59,6 @@
     "changelogen": "^0.5.5",
     "eslint": "^8.49.0",
     "nuxt": "^3.7.3",
-    "split-type": "^0.3.3",
     "vitest": "^0.33.0"
   }
 }
