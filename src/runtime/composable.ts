@@ -6,6 +6,7 @@ import {
   tryOnScopeDispose,
   computed,
   watch,
+  ComputedRef,
 } from "#imports";
 
 export type UseSplitTextOptions = {
@@ -16,10 +17,6 @@ export type UseSplitTextOptions = {
   splitBy: TypeOptions;
   /**
    * The wrapping options
-   * @param `select` - apply wrapping to the specified split type - {TypesValue}
-   * @param `selectElClass` - The class to apply to the selected elements
-   * @param `wrapType` - The type of element to wrap with - {HTMLTag}
-   * @param `wrapClass` - The class to apply to the wrapping element
    * @default undefined
    * @example
    * ```
@@ -32,9 +29,13 @@ export type UseSplitTextOptions = {
    * ```
    */
   wrapping?: {
+    /** The type of element to wrap with - {HTMLTag} */
     wrapType: keyof HTMLElementTagNameMap;
+    /** The class to apply to the selected elements */
     wrapClass?: string;
+    /** The type of split to apply the wrapping to */
     select: TypesValue;
+    /** The class to apply to the wrapping element */
     selectElClass?: string;
   };
   /**
@@ -62,10 +63,19 @@ export type UseSplitTextOptions = {
   splitOptions?: Partial<Omit<SplitTypeOptions, "types" | "split">>;
 };
 
+export type UseSplitTextReturn = {
+  instance: ComputedRef<SplitType | undefined>;
+  lines: ComputedRef<HTMLElement[] | null | undefined>;
+  words: ComputedRef<HTMLElement[] | null | undefined>;
+  chars: ComputedRef<HTMLElement[] | null | undefined>;
+  split: (options: Partial<SplitTypeOptions>) => void;
+  revert: () => void;
+};
+
 export function useSplitText(
   target: MaybeComputedElementRef,
   options: UseSplitTextOptions,
-) {
+): UseSplitTextReturn {
   const unRefedTarget = computed(() => unrefElement(target) as HTMLElement),
     instance = computed<SplitType | undefined>(() =>
       !unRefedTarget.value
@@ -132,5 +142,3 @@ export function useSplitText(
     revert,
   };
 }
-
-export type UseSplitTextReturn = ReturnType<typeof useSplitText>;
