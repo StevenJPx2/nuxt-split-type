@@ -1,6 +1,18 @@
 # Changelog
 
 
+## v0.1.3
+
+[compare changes](https://github.com/stevenjpx2/nuxt-split-type/compare/v0.1.2...v0.1.3)
+
+### 📖 Documentation
+
+- **types:** Added more docs and fixed types ([516ac35](https://github.com/stevenjpx2/nuxt-split-type/commit/516ac35))
+
+### ❤️ Contributors
+
+- Steven John <stevenjpx2@gmail.com>
+
 ## v0.1.2
 
 [compare changes](https://github.com/stevenjpx2/nuxt-split-type/compare/v0.1.1...v0.1.2)
