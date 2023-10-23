@@ -1,13 +1,15 @@
-import SplitType, { TypesValue, SplitTypeOptions } from "split-type";
-import { MaybeComputedElementRef, TypeOptions } from "./types";
+import SplitType from "split-type";
+import type { TypesValue, SplitTypeOptions } from "split-type";
+import type { TypeOptions } from "./types";
 import {
   unrefElement,
   useEventListener,
   tryOnScopeDispose,
   computed,
   watch,
-  ComputedRef,
 } from "#imports";
+import type { ComputedRef } from "#imports";
+import type { MaybeComputedElementRef } from "@vueuse/core";
 
 export type UseSplitTextOptions = {
   /** The types of splits to apply to the target element
@@ -19,7 +21,7 @@ export type UseSplitTextOptions = {
    * The wrapping options
    * @default undefined
    * @example
-   * ```
+   * ```ts
    * {
    *   select: "lines",
    *   wrapType: "span",
@@ -43,7 +45,7 @@ export type UseSplitTextOptions = {
    * @param `instanceVal` - The instance of SplitType
    * @default undefined
    * @example
-   * ```
+   * ```ts
    *  (instanceVal) => {
    *    instanceVal.words?.forEach((el) => (el.style.display = "inline-flex"));
    *  }
@@ -54,7 +56,7 @@ export type UseSplitTextOptions = {
    * The options to pass to the SplitType instance
    * @default undefined
    * @example
-   * ```
+   * ```ts
    * {
    *  splitClass: "splitted"
    * }
@@ -64,11 +66,33 @@ export type UseSplitTextOptions = {
 };
 
 export type UseSplitTextReturn = {
+  /** The instance of SplitType as a ref
+   * @remarks This is a computed ref
+   * */
   instance: ComputedRef<SplitType | undefined>;
+  /** The lines of the split as a ref
+   * @remarks It will be null if `lines` is not included in `splitBy`
+   * */
   lines: ComputedRef<HTMLElement[] | null | undefined>;
+  /** The words of the split as a ref
+   * @remarks It will be null if `words` is not included in `splitBy`
+   * */
   words: ComputedRef<HTMLElement[] | null | undefined>;
+  /** The chars of the split as a ref
+   * @remarks It will be null if `chars` is not included in `splitBy`
+   * */
   chars: ComputedRef<HTMLElement[] | null | undefined>;
+  /** The split function
+   * @param `options` - The options to pass to the SplitType instance
+   * @remarks This function will split the target element
+   * Useful for splitting the element again after a resize event
+   * This is done automatically on resize
+   * */
   split: (options: Partial<SplitTypeOptions>) => void;
+  /** The revert function
+   * @remarks This function will revert the target element
+   * Automatically called on component unmount
+   * */
   revert: () => void;
 };
 
