@@ -1,6 +1,18 @@
 # Changelog
 
 
+## v0.1.4
+
+[compare changes](https://github.com/stevenjpx2/nuxt-split-type/compare/v0.1.3...v0.1.4)
+
+### 🚀 Enhancements
+
+- Add debounce and refactor types for latest split-type ([79e020b](https://github.com/stevenjpx2/nuxt-split-type/commit/79e020b))
+
+### ❤️ Contributors
+
+- Steven John <stevenjpx2@gmail.com>
+
 ## v0.1.3
 
 [compare changes](https://github.com/stevenjpx2/nuxt-split-type/compare/v0.1.2...v0.1.3)
