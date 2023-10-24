@@ -1,5 +1,8 @@
-import SplitType from "split-type";
-import type { TypesValue, SplitTypeOptions } from "split-type";
+import {
+  type TypesValue,
+  type SplitTypeOptions,
+  default as SplitType,
+} from "split-type";
 import type { TypeOptions } from "./types";
 import {
   unrefElement,
@@ -7,8 +10,9 @@ import {
   tryOnScopeDispose,
   computed,
   watch,
+  useDebounceFn,
+  type ComputedRef,
 } from "#imports";
-import type { ComputedRef } from "#imports";
 import type { MaybeComputedElementRef } from "@vueuse/core";
 
 export type UseSplitTextOptions = {
@@ -36,7 +40,7 @@ export type UseSplitTextOptions = {
     /** The class to apply to the selected elements */
     wrapClass?: string;
     /** The type of split to apply the wrapping to */
-    select: TypesValue;
+    select: TypesValue[number];
     /** The class to apply to the wrapping element */
     selectElClass?: string;
   };
@@ -119,9 +123,7 @@ export function useSplitText(
     revert = () => instance.value?.revert(),
     { splitBy, wrapping, onComplete } = options,
     wrapFn = (instance: SplitType) => {
-      if (
-        (["chars", "words"] as TypesValue[]).every((sp) => splitBy.includes(sp))
-      )
+      if ((["chars", "words"] as const).every((sp) => splitBy.includes(sp)))
         instance.words?.forEach((el) => (el.style.display = "inline-flex"));
 
       if (!wrapping) return;
@@ -147,13 +149,11 @@ export function useSplitText(
     { flush: "post" },
   );
 
-  useEventListener(
-    "resize",
-    () => {
-      split({});
-    },
-    { passive: true },
-  );
+  const resizeFn = useDebounceFn(() => {
+    split({});
+  }, 500);
+
+  useEventListener("resize", resizeFn, { passive: true });
 
   tryOnScopeDispose(revert);
 

@@ -1,5 +1,9 @@
-import { ComponentPublicInstance, MaybeRef, MaybeRefOrGetter } from "#imports";
-import { Mutable } from "@vueuse/core";
+import type {
+  ComponentPublicInstance,
+  MaybeRef,
+  MaybeRefOrGetter,
+} from "#imports";
+import type { Mutable } from "@vueuse/core";
 
 type StringedCombination<
   T extends string[],
@@ -14,7 +18,7 @@ export const TypesValue = ["lines", "words", "chars"] as const;
 export type TypesValue = Mutable<typeof TypesValue>;
 export type TypesValueUnion = TypesValue[number];
 
-export type TypesListString = StringedCombination<TypesValue, ", ">;
+export type TypesListString = StringedCombination<TypesValue, ",">;
 export type TypesValueTuple =
   | [TypesValueUnion, TypesValueUnion, TypesValueUnion]
   | [TypesValueUnion, TypesValueUnion]

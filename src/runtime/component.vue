@@ -28,9 +28,6 @@ const props = withDefaults(
     chars?: boolean;
     /**
      * The wrapping options
-     * @param `select` - apply wrapping to the specified split type - {TypesValue}
-     * @param `wrapType` - The type of element to wrap with - {HTMLTag}
-     * @param `wrapClass` - The class to apply to the wrapping element
      * @default undefined
      * @example
      * ```

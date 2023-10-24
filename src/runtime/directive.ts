@@ -1,9 +1,11 @@
-import { ObjectDirective } from "nuxt/dist/app/compat/capi";
-import { UseSplitTextOptions, useSplitText } from "./composable";
+import type { ObjectDirective } from "nuxt/dist/app/compat/capi";
+import { useSplitText } from "./composable";
+import type { UseSplitTextOptions } from "./composable";
 import { directiveHooks } from "@vueuse/core";
-import SplitType from "split-type";
+import type SplitType from "split-type";
 
 type VSplitTextOptions = UseSplitTextOptions & {
+  /** Callback when the split is complete */
   onComplete?: (instance: SplitType) => void;
 };
 
