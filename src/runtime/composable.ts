@@ -140,7 +140,7 @@ export function useSplitText(
         types: splitBy,
         ...options.splitOptions,
       });
-      wrapFn(instance.value);
+      split({});
       onComplete?.(instance.value);
     },
     { immediate: true, flush: "post" },
