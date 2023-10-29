@@ -1,6 +1,22 @@
 # Changelog
 
 
+## v0.1.6
+
+[compare changes](https://github.com/stevenjpx2/nuxt-split-type/compare/v0.1.5...v0.1.6)
+
+### 💅 Refactors
+
+- Change from explicit call to wrapFn to split ([a320c14](https://github.com/stevenjpx2/nuxt-split-type/commit/a320c14))
+
+### 🎨 Styles
+
+- Make eslint happy ([313febb](https://github.com/stevenjpx2/nuxt-split-type/commit/313febb))
+
+### ❤️ Contributors
+
+- Steven John <stevenjpx2@gmail.com>
+
 ## v0.1.5
 
 [compare changes](https://github.com/stevenjpx2/nuxt-split-type/compare/v0.1.4...v0.1.5)
