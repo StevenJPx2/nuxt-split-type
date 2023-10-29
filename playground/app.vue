@@ -26,7 +26,9 @@ const log = console.log;
 </script>
 
 <template>
-  <p ref="pRef">Nuxt module playground!</p>
+  <p ref="pRef">
+    Nuxt module playground!
+  </p>
   <split-text
     lines
     :words="useWords"

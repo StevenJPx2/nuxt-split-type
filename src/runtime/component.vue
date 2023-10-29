@@ -77,7 +77,10 @@ defineExpose({ el: compRef });
 </script>
 
 <template>
-  <component :is="props.as" ref="compRef">
+  <component
+    :is="props.as"
+    ref="compRef"
+  >
     <slot :instance="instance" />
   </component>
 </template>
