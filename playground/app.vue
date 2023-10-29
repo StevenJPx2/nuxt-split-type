@@ -1,13 +1,14 @@
 <script setup lang="ts">
 import { ref, useSplitText, useTimeoutFn } from "#imports";
-import { SplitText } from "#components";
+import SplitText from "../dist/runtime/component.vue";
 import { promiseTimeout } from "@vueuse/core";
+import { vSplitText } from "../dist/runtime/directive";
 
 const useWords = ref(true);
 const pRef = ref<HTMLParagraphElement | null>(null);
 
 const { instance, lines, revert } = useSplitText(pRef, {
-  splitBy: "lines, words",
+  splitBy: "lines,words",
   wrapping: { select: "lines", wrapType: "span", wrapClass: "inline-block" },
   onComplete: (instance) => {
     console.log("complete", instance);
@@ -37,7 +38,7 @@ const log = console.log;
 
   <p
     v-split-text="{
-      splitBy: 'lines, words',
+      splitBy: 'lines,words',
       onComplete: (ins) => log('done directive', ins),
     }"
   >
@@ -45,7 +46,7 @@ const log = console.log;
   </p>
 
   <pre>
-    {{ compRef?.el?.innerText }}
+    {{ pRef?.innerText }}
   </pre>
 </template>
 

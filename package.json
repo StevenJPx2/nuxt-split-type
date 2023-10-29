@@ -44,8 +44,8 @@
   },
   "dependencies": {
     "@nuxt/kit": "^3.7.2",
-    "typescript": "^5.2.2",
-    "split-type": "^0.3.3"
+    "split-type": "^0.3.3",
+    "typescript": "^5.2.2"
   },
   "devDependencies": {
     "@nuxt/devtools": "latest",

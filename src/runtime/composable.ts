@@ -12,6 +12,8 @@ import {
   watch,
   useDebounceFn,
   type ComputedRef,
+  ref,
+  type Ref,
 } from "#imports";
 import type { MaybeComputedElementRef } from "@vueuse/core";
 
@@ -36,7 +38,7 @@ export type UseSplitTextOptions = {
    */
   wrapping?: {
     /** The type of element to wrap with - {HTMLTag} */
-    wrapType: keyof HTMLElementTagNameMap;
+    wrapType?: keyof HTMLElementTagNameMap;
     /** The class to apply to the selected elements */
     wrapClass?: string;
     /** The type of split to apply the wrapping to */
@@ -71,9 +73,8 @@ export type UseSplitTextOptions = {
 
 export type UseSplitTextReturn = {
   /** The instance of SplitType as a ref
-   * @remarks This is a computed ref
    * */
-  instance: ComputedRef<SplitType | undefined>;
+  instance: Ref<SplitType | undefined>;
   /** The lines of the split as a ref
    * @remarks It will be null if `lines` is not included in `splitBy`
    * */
@@ -104,15 +105,7 @@ export function useSplitText(
   target: MaybeComputedElementRef,
   options: UseSplitTextOptions,
 ): UseSplitTextReturn {
-  const unRefedTarget = computed(() => unrefElement(target) as HTMLElement),
-    instance = computed<SplitType | undefined>(() =>
-      !unRefedTarget.value
-        ? undefined
-        : new SplitType(unRefedTarget.value, {
-            types: options.splitBy,
-            ...options.splitOptions,
-          }),
-    ),
+  const instance = ref<SplitType | undefined>(),
     lines = computed(() => instance.value?.lines),
     words = computed(() => instance.value?.words),
     chars = computed(() => instance.value?.chars),
@@ -128,7 +121,7 @@ export function useSplitText(
 
       if (!wrapping) return;
       instance[wrapping.select]?.forEach((childEl, index) => {
-        const wrapEl = document.createElement(wrapping.wrapType);
+        const wrapEl = document.createElement(wrapping.wrapType ?? "span");
         if (wrapping.selectElClass)
           childEl.classList.add(...wrapping.selectElClass.split(" "));
         if (wrapping.wrapClass)
@@ -140,13 +133,17 @@ export function useSplitText(
     };
 
   watch(
-    instance,
-    (instance) => {
-      if (!instance) return;
-      wrapFn(instance);
-      onComplete?.(instance);
+    () => unrefElement(target),
+    (el) => {
+      if (!el) return;
+      instance.value = new SplitType(el as HTMLElement, {
+        types: splitBy,
+        ...options.splitOptions,
+      });
+      wrapFn(instance.value);
+      onComplete?.(instance.value);
     },
-    { flush: "post" },
+    { immediate: true, flush: "post" },
   );
 
   const resizeFn = useDebounceFn(() => {
