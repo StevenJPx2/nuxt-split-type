@@ -1,6 +1,18 @@
 # Changelog
 
 
+## v0.1.5
+
+[compare changes](https://github.com/stevenjpx2/nuxt-split-type/compare/v0.1.4...v0.1.5)
+
+### 🩹 Fixes
+
+- Remove unecessary computed refs, create SplitType on element mount ([f0ff847](https://github.com/stevenjpx2/nuxt-split-type/commit/f0ff847))
+
+### ❤️ Contributors
+
+- Steven John <stevenjpx2@gmail.com>
+
 ## v0.1.4
 
 [compare changes](https://github.com/stevenjpx2/nuxt-split-type/compare/v0.1.3...v0.1.4)
