@@ -1,6 +1,18 @@
 # Changelog
 
 
+## v0.1.7
+
+[compare changes](https://github.com/stevenjpx2/nuxt-split-type/compare/v0.1.6...v0.1.7)
+
+### 🩹 Fixes
+
+- **deps:** Move vueuse/nuxt to deps from dev ([c7bb550](https://github.com/stevenjpx2/nuxt-split-type/commit/c7bb550))
+
+### ❤️ Contributors
+
+- Steven John <stevenjpx2@gmail.com>
+
 ## v0.1.6
 
 [compare changes](https://github.com/stevenjpx2/nuxt-split-type/compare/v0.1.5...v0.1.6)
