@@ -2,7 +2,7 @@
 import { ref, useSplitText, useTimeoutFn } from "#imports";
 import SplitText from "../dist/runtime/component.vue";
 import { promiseTimeout } from "@vueuse/core";
-import { vSplitText } from "../dist/runtime/directive";
+import { vSplitText } from "../src/runtime/directive";
 
 const useWords = ref(true);
 const pRef = ref<HTMLParagraphElement | null>(null);

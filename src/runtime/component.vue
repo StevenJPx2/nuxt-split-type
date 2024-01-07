@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { computed, ref, toRefs, useSplitText, watch } from "#imports";
-import { TypesValue, TypesValueTuple } from "./types";
-import { UseSplitTextOptions } from "./composable";
+import { TypesValue, type TypesValueTuple } from "./types";
+import type { UseSplitTextOptions } from "./composable";
 import SplitType from "split-type";
 
 const props = withDefaults(
