@@ -1,6 +1,22 @@
 # Changelog
 
 
+## v0.1.8
+
+[compare changes](https://github.com/stevenjpx2/nuxt-split-type/compare/v0.1.7...v0.1.8)
+
+### 💅 Refactors
+
+- Remove use of #imports in files ([36d5d69](https://github.com/stevenjpx2/nuxt-split-type/commit/36d5d69))
+
+### 📖 Documentation
+
+- **README:** Add playground ([1e32aae](https://github.com/stevenjpx2/nuxt-split-type/commit/1e32aae))
+
+### ❤️ Contributors
+
+- Steven John <stevenjpx2@gmail.com>
+
 ## v0.1.7
 
 [compare changes](https://github.com/stevenjpx2/nuxt-split-type/compare/v0.1.6...v0.1.7)
