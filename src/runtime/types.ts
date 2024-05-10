@@ -1,9 +1,5 @@
-import type {
-  ComponentPublicInstance,
-  MaybeRef,
-  MaybeRefOrGetter,
-} from "#imports";
-import type { Mutable } from "@vueuse/core";
+import type { MaybeRef, MaybeRefOrGetter, Mutable } from "@vueuse/core";
+import type { ComponentPublicInstance } from "vue";
 
 type StringedCombination<
   T extends string[],
@@ -31,3 +27,5 @@ export type MaybeElementRef<T extends MaybeElement = MaybeElement> =
 export type MaybeComputedElementRef<T extends MaybeElement = MaybeElement> =
   MaybeRefOrGetter<T>;
 export type MaybeElement = HTMLElement | VueInstance | undefined | null;
+
+export type { UseSplitTextReturn, UseSplitTextOptions } from "./composable";

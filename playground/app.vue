@@ -1,8 +1,8 @@
 <script setup lang="ts">
-import { ref, useSplitText, useTimeoutFn } from "#imports";
-import SplitText from "../dist/runtime/component.vue";
+import { ref, useTimeoutFn } from "#imports";
+import { useSplitText, vSplitText } from "../src/module";
+import { SplitText } from "#build/components";
 import { promiseTimeout } from "@vueuse/core";
-import { vSplitText } from "../src/runtime/directive";
 
 const useWords = ref(true);
 const pRef = ref<HTMLParagraphElement | null>(null);
@@ -26,9 +26,7 @@ const log = console.log;
 </script>
 
 <template>
-  <p ref="pRef">
-    Nuxt module playground!
-  </p>
+  <p ref="pRef">Nuxt module playground!</p>
   <split-text
     lines
     :words="useWords"

@@ -1,16 +1,16 @@
 import {
-  defineNuxtModule,
+  addComponent,
+  addImports,
   addPlugin,
   createResolver,
+  defineNuxtModule,
   installModule,
-  addImports,
-  addComponent,
 } from "@nuxt/kit";
 
 import { name, version } from "../package.json";
 
 // Module options TypeScript interface definition
-export interface ModuleOptions {}
+export type ModuleOptions = Record<string, never>;
 
 export default defineNuxtModule<ModuleOptions>({
   meta: {
@@ -38,3 +38,10 @@ export default defineNuxtModule<ModuleOptions>({
     await installModule("@vueuse/nuxt", {});
   },
 });
+
+export { vSplitText } from "./runtime/directive";
+export { useSplitText } from "./runtime/composable";
+export type {
+  UseSplitTextReturn,
+  UseSplitTextOptions,
+} from "./runtime/composable";

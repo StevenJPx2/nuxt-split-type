@@ -1,8 +1,8 @@
 <script setup lang="ts">
-import { computed, ref, toRefs, useSplitText, watch } from "#imports";
+import { computed, ref, toRefs, watch } from "vue";
 import { TypesValue, type TypesValueTuple } from "./types";
-import type { UseSplitTextOptions } from "./composable";
-import SplitType from "split-type";
+import { useSplitText, type UseSplitTextOptions } from "./composable";
+import type SplitType from "split-type";
 
 const props = withDefaults(
   defineProps<{
@@ -77,10 +77,7 @@ defineExpose({ el: compRef });
 </script>
 
 <template>
-  <component
-    :is="props.as"
-    ref="compRef"
-  >
+  <component :is="props.as" ref="compRef">
     <slot :instance="instance" />
   </component>
 </template>
