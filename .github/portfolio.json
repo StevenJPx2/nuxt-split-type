@@ -1,0 +1,16 @@
+{
+  "name": "Nuxt SplitType",
+  "body": [
+    "A **Nuxt module** for **SplitType** that splits text into lines, words or characters. Use it as a **`useSplitText` composable**, a **`<split-text>` component** or a **`v-split-text` directive**.",
+    "Adds a **`wrapping` option** that wraps each line, word or character in an element of your choice, and a **callback** for the SplitType proxy. The README marks it as pre-v1."
+  ],
+  "areas": [
+    "developer-tools",
+    "interaction-design"
+  ],
+  "technologies": {
+    "remove": [
+      "vue"
+    ]
+  }
+}
